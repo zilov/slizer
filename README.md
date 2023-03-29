@@ -16,6 +16,8 @@ To use the asShredder tool, run the following command:
 python asShredder.py -a <assembly_fasta> -b <coverage_bed> [-l <min_length_threshold>] [-c <max_coverage_threshold>] [-o <output_folder>]
 ```
 
+`<coverage_bed>` should be generated with `bedtools genomecov -bga -split -ibam <yoour_sorted_bam> > <coverage_bed>`
+
 **Parameters:**
 
 * -a, --assembly: Path to the assembly fasta file (required)
@@ -31,6 +33,7 @@ python asShredder.py -a assembly.fasta -b coverage.bed -l 100 -c 10 -o ./output
 ```
 
 This command will process the input assembly.fasta and coverage.bed files and create output files in the ./output folder. The minimum length threshold for coverage gaps is set to 100, and the maximum coverage threshold is set to 10.
+<<<<<<< HEAD
 
 ## Output Files
 
