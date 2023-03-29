@@ -109,9 +109,9 @@ def configure_logging(log_file):
 def main(args: argparse.Namespace) -> Tuple[str, str, str, str]:
     
     # Convert input arguments to named tuples
-    assembly = args.assembly
-    coverage_bed = args.coverage_bed
-    output_folder = args.output_folder
+    assembly = os.path.abspath(args.assembly)
+    coverage_bed = os.path.abspath(args.coverage_bed)
+    output_folder = os.path.abspath(args.output_folder)
     min_length_threshold = args.min_length_threshold
     max_coverage_threshold = args.max_coverage_threshold
     
@@ -158,10 +158,11 @@ def main(args: argparse.Namespace) -> Tuple[str, str, str, str]:
         fw.write(f"Length threshold is {min_length_threshold}, coverage threshold is {max_coverage_threshold}")
         fw.write(f"Assembly: {assembly}, coverage file: {coverage_bed}\n")
         bases, contigs, regions = count_bed_stats(regions_bed)
-        fw.write(f"Stats:\nRegions removed: {regions}\n")
-        fw.write(f"Bases removed: {bases}\n")
-        fw.write(f"Contigs splitted: {contigs}\n")
-        logging.info(f"Stats:\nRegions removed: {regions}")
+        fw.write(f"Stats:\nRegions removed:\t{regions}\n")
+        fw.write(f"Bases removed:\t{bases}\n")
+        fw.write(f"Contigs splitted:\t{contigs}\n")
+        logging.info(f"Stats:")
+        logging.info(f"Regions removed: {regions}")
         logging.info(f"Bases removed: {bases}")
         logging.info(f"Contigs splitted: {contigs}")
         
