@@ -1,0 +1,43 @@
+# read config
+OUTDIR = config["outdir"]
+ASSEMBLY = config["assembly"]
+HIFI = config["hifi"]
+NANOPORE = config["nanopore"]
+PACBIO = config["pacbio"]
+FR = config['forward_reads']
+RR = config['reverse_reads']
+EXECUTION_FOLDER = config['execution_folder']
+COVERAGE_BED = config['coverage_bed']
+MIN_LENGTH = config['min_length_threshold']
+MAX_COVERAGE = config['max_coverage_threshold']
+MODE = config["mode"]
+SPLIT_SCRIPT = config['split_script']
+PREFIX = config["prefix"]
+
+rule all:
+    input:
+        f"{OUTDIR}/{PREFIX}_l{MIN_LENGTH}_c{MAX_COVERAGE}_splitted.fasta",
+
+rule envs:
+    input:
+        align = "../envs/align.yaml"
+
+envs = rules.envs.input
+
+if MODE == "hifi":
+    include: "./rules/coverage_hifi.smk"
+    COVERAGE_BED = rules.get_coverage_hifi.output.coverage_bed
+
+if MODE == "nanopore":
+    include: "./rules/coverage_nanopore.smk"
+    COVERAGE_BED = rules.get_coverage_nanopore.output.coverage_bed
+
+if MODE == "pacbio":
+    include: "./rules/coverage_pacbio.smk"
+    COVERAGE_BED = rules.get_coverage_pacbio.output.coverage_bed
+
+if MODE == "paired":
+    include: "./rules/coverage_paired.smk"
+    COVERAGE_BED = rules.get_coverage_paired.output.coverage_bed
+
+include: "./rules/split_by_coverage.smk"
