@@ -3,3 +3,4 @@ __pycache__
 test
 __init__.py
 config
+.snakemake

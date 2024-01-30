@@ -9,14 +9,18 @@ RR = config['reverse_reads']
 EXECUTION_FOLDER = config['execution_folder']
 COVERAGE_BED = config['coverage_bed']
 MIN_LENGTH = config['min_length_threshold']
-MAX_COVERAGE = config['max_coverage_threshold']
+MEAN_COVERAGE_FRACTION = config["mean_coverage_fraction"]
 MODE = config["mode"]
 SPLIT_SCRIPT = config['split_script']
 PREFIX = config["prefix"]
+ZL_THRESHOLD = config["z_low_threshold"]
+ZH_THRESHOLD = config["z_high_threshold"]
+TAIL_THRESHOLD = config["tail_length_threshold"]
+
 
 rule all:
     input:
-        f"{OUTDIR}/{PREFIX}_l{MIN_LENGTH}_c{MAX_COVERAGE}_splitted.fasta",
+        f"{OUTDIR}/{PREFIX}_splitted.fa",
 
 rule envs:
     input:

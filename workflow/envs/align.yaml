@@ -7,3 +7,5 @@ dependencies:
   - ncurses=6.2
   - bedtools=2.30.0
   - minimap2=2.24
+  - pandas
+  - numpy
