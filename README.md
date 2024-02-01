@@ -1,5 +1,5 @@
 # slizer
-Tool for cutting assembly contigs by low coverage regions, which could have chimeric origins. Slizer is designed to:
+Tool for cutting assembly contigs by low coverage regions, which could have misassembly/chimeric origins. Slizer is designed to:
 - run and sort alignment of sequencing reads on draft assembly with [`minimap2`](https://github.com/lh3/minimap2) and [`samtools`](http://www.htslib.org/)
 - then identify coverage regions with [`bedtools genomecov`](https://bedtools.readthedocs.io/en/latest/content/tools/genomecov.html)
 - report low and high coverage regions in genome based on z-score thresholds
