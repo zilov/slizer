@@ -16,6 +16,7 @@ PREFIX = config["prefix"]
 ZL_THRESHOLD = config["z_low_threshold"]
 ZH_THRESHOLD = config["z_high_threshold"]
 TAIL_THRESHOLD = config["tail_length_threshold"]
+REMOVE_LOW_COVERAGE = config["remove_low_coverage"]
 
 
 rule all:

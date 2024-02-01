@@ -183,7 +183,7 @@ def run_script():
     parser.add_argument('-b', '--coverage_bed', type=str, help='Path to the coverage bed file.')
     parser.add_argument('-l', '--min_length_threshold', type=int, default=100, help='Minimum length threshold for coverage gaps.')
     parser.add_argument('-c', '--max_coverage_threshold', type=int, default=10, help='Maximum coverage threshold for coverage gaps.')
-    parser.add_argument('-o', '--output_folder', type=str, default="./asShredder", help='Path to the output folder.')
+    parser.add_argument('-o', '--output_folder', type=str, default="./slizer", help='Path to the output folder.')
     parser.add_argument('-p', '--prefix', help="output files prefix (assembly file prefix by default)", default='')
     
     args = parser.parse_args()

@@ -160,41 +160,46 @@ def extract_low_coverage_sequences(fasta_reader, low_cov_regions):
     return low_cov_fasta_dict
 
 
-def extract_splitted_fasta(fasta_reader, low_cov_regions):
+def extract_splitted_fasta(fasta_reader, low_cov_regions, remove_low_coverage=False):
     """
-    Extract sequences without low-coverage regions and save to a dictionary.
+    Extract sequences with or without low-coverage regions based on the 'hardcut' parameter and save to a dictionary.
 
     Parameters:
         fasta_reader (generator): Generator that yields tuples of (header, sequence) from a FASTA file.
         low_cov_regions (pd.DataFrame): DataFrame containing only the low-coverage regions.
+        hardcut (bool): If True, completely remove low-coverage regions. If False, split at the end value of low-coverage regions.
 
     Returns:
-        dict: Dictionary containing the extracted sequences without low-coverage regions.
+        dict: Dictionary containing the extracted sequences with modifications based on 'hardcut' parameter.
     """
     
     splitted_fasta_dict = {}
     for record_id, sequence in fasta_reader:
         low_coverage_intervals = low_cov_regions[low_cov_regions['contig_header'] == record_id]
         
-        # If there are no low-coverage regions for this contig, save the contig as is
         if low_coverage_intervals.empty:
             splitted_fasta_dict[record_id] = sequence
             continue
         
-        # Otherwise, split the contig based on low-coverage regions
         last_end = 0
         split_index = 1
         for _, row in low_coverage_intervals.iterrows():
-            new_seq = sequence[last_end:row['start']]
+            if remove_low_coverage:
+                new_seq = sequence[last_end:row['start']]
+            else:
+                # Include the low-coverage region in the sequence if not hardcutting
+                new_seq = sequence[last_end:row['end']]
+
             new_record_id = f"{record_id}_{split_index}"
             splitted_fasta_dict[new_record_id] = new_seq
             last_end = row['end']
             split_index += 1
 
         # Save the remaining part of the contig after the last low-coverage region
-        new_seq = sequence[last_end:]
-        new_record_id = f"{record_id}_{split_index}"
-        splitted_fasta_dict[new_record_id] = new_seq
+        if last_end < len(sequence):  # Ensure there's a remaining part to be saved
+            new_seq = sequence[last_end:]
+            new_record_id = f"{record_id}_{split_index}"
+            splitted_fasta_dict[new_record_id] = new_seq
 
     return splitted_fasta_dict
 
@@ -268,6 +273,8 @@ def parse_arguments():
     parser.add_argument("-t", "--tail_threshold", type=int, default=1000, help="Size of the tail regions to exclude.")
     parser.add_argument("-zl", "--z_threshold_low", type=float, default=-2, help="Z-score threshold for low coverage.")
     parser.add_argument("-zh", "--z_threshold_high", type=float, default=2, help="Z-score threshold for high coverage.")
+    parser.add_argument("-r", "--remove_low_coverage", type=bool, default=False, help="Remove low coverage regions from splitted assembly/")
+    
     return parser.parse_args()
 
 
@@ -283,7 +290,8 @@ def main():
     z_threshold_low = args.z_threshold_low
     z_threshold_high = args.z_threshold_high
     mean_cov_fraction = args.mean_cov_fraction
-
+    remove_low_coverage = args.remove_low_coverage
+    
     # Output files
     low_cov_file = f"{output_folder}/{prefix}_low_cov_regions.tsv"
     high_cov_file = f"{output_folder}/{prefix}_high_cov_regions.tsv"
@@ -336,7 +344,7 @@ def main():
     # Step 5: Extract assembly without low-coverage regions and save to a dictionary
     logging.info("Extracting low-coverage regions from assembly.")
     fasta_reader = fasta_reader_yield(fasta_file_path)  # Resetting the fasta_reader generator
-    splitted_fasta_dict = extract_splitted_fasta(fasta_reader, low_cov_regions)
+    splitted_fasta_dict = extract_splitted_fasta(fasta_reader, low_cov_regions, remove_low_coverage)
     write_fasta_file(splitted_fasta_dict, splitted_fasta_out)
     logging.info(f"Splitted assebmbly is written in {splitted_fasta_out}")
     

@@ -62,10 +62,12 @@ if __name__ == '__main__':
                         help="Fraction of the global mean coverage to use as a threshold for filtering low intervals."
                              "Intervals with coverage below fraction will be used for further analysis.")
     parser.add_argument('-p', '--prefix', help="output files prefix (assembly file prefix by default)", default='')
-    parser.add_argument('-o', '--output_folder', type=str, default="./asShredder", help='Path to the output folder.')
+    parser.add_argument('-o', '--output_folder', type=str, default="./slizer", help='Path to the output folder.')
     parser.add_argument("--tail_threshold", type=int, default=1000, help="Size of the tail regions to exclude.")
     parser.add_argument("-zl", "--z_threshold_low", type=float, default=-2, help="Z-score threshold for low coverage. Should be negative float value.")
     parser.add_argument("-zh", "--z_threshold_high", type=float, default=2, help="Z-score threshold for high coverage.")
+    parser.add_argument("-r", "--remove_low_coverage", type=bool, default=False, action='store_true', help="Remove low coverage regions from splitted assembly/")
+    
     parser.add_argument('-d','--debug', help='debug mode', action='store_true')
         
     args = parser.parse_args()
@@ -87,6 +89,7 @@ if __name__ == '__main__':
     zl = args.z_threshold_low
     zh = args.z_threshold_high
     tail = args.tail_threshold
+    remove_low_coverage = args.remove_low_coverage
     
     if zl > 0:
         zl = -zl
@@ -127,6 +130,7 @@ if __name__ == '__main__':
         "z_low_threshold": zl,
         "z_high_threshold": zh,
         "tail_length_threshold": tail,
+        "remove_low_coverage": remove_low_coverage,
         "execution_folder" : execution_folder,
         "split_script" : split_script,
         "prefix" : prefix,
