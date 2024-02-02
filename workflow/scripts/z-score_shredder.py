@@ -250,14 +250,14 @@ def write_final_statistics_report(low_cov_regions, high_cov_regions, output_file
     total_contigs_splitted = len(low_cov_regions['contig_header'].unique())
     
     with open(output_file, 'w') as f:
-        logging.info(f"Total low-coverage regions: {total_low_cov_regions}")
-        f.write(f"Total low-coverage regions: {total_low_cov_regions}\n")
+        logging.info(f"Total low-coverage regions:{total_low_cov_regions}")
+        f.write(f"Total low-coverage regions:\t{total_low_cov_regions}\n")
         logging.info(f"Total high-coverage regions: {total_high_cov_regions}")
-        f.write(f"Total high-coverage regions: {total_high_cov_regions}\n")
+        f.write(f"Total high-coverage regions:\t{total_high_cov_regions}\n")
         logging.info(f"Total removed sequences length: {total_removed_sequences_length}")
-        f.write(f"Total removed sequences length: {total_removed_sequences_length}\n")
+        f.write(f"Total removed sequences length:\t{total_removed_sequences_length}\n")
         logging.info(f"Total contigs splitted: {total_contigs_splitted}") 
-        f.write(f"Total contigs splitted: {total_contigs_splitted}\n")
+        f.write(f"Total contigs splitted:\t{total_contigs_splitted}\n")
 
 
 def parse_arguments():
@@ -296,7 +296,7 @@ def main():
     low_cov_file = f"{output_folder}/{prefix}_low_cov_regions.tsv"
     high_cov_file = f"{output_folder}/{prefix}_high_cov_regions.tsv"
     contig_stats_file = f"{output_folder}/{prefix}_contig_stats.tsv"
-    final_stats_file = f"{output_folder}/{prefix}_final_statistics_report.txt"
+    final_stats_file = f"{output_folder}/{prefix}_final_statistics_report.tsv"
     low_cov_fasta_out = f"{output_folder}/{prefix}_low_cov_regions.fa"
     splitted_fasta_out = f"{output_folder}/{prefix}_splitted.fa"
     
