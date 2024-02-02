@@ -1,7 +1,7 @@
 rule split_by_coverage:
     input:
         assembly = ASSEMBLY,
-        coverage_bed = COVERAGE_BED
+        coverage_bed = rules.get_coverage.output.coverage_bed
     threads: workflow.cores
     conda: envs.align
     output:

@@ -34,7 +34,7 @@ By default slizer uses 8 threads to run `minimap2`.
 
 You could also use Nanopore, PacBio or pair-end Illumina reads to run slizer. 
 
-Also, if you already have reads alignment file, you could generage `coverage.bed` file directly and provide it to slizer. Use `bedtools genomecov -bga -split -ibam {your_alignment.bam} > {output.coverage_bed}` than run slizer with `slizer -m coverage -a <assembly.fasta> -b <coverage.bam> -o ./slizer_results`.
+Also, if you already have reads alignment file, you could provide it directly to slizer. Just run slizer with `slizer -m bam -a <assembly.fasta> -b <alignemnt.bam> -o ./slizer_results`.
 
 **Parameters:**
 
@@ -45,7 +45,7 @@ Also, if you already have reads alignment file, you could generage `coverage.bed
 * -pacbio, Path to PacBio reads
 * -1, --forward_reads, Path to the forward reads fastq file
 * -2, --reverse_reads, Path to the reverse reads fastq file
-* -b, --coverage_bed: Path to the coverage bed file
+* -b, --bam: Path to the alignment bam file
 * -p, --prefix,output files prefix (assembly file prefix by default)
 * -l, --min_length_threshold: Minimum length threshold for coverage gaps (default: 500)
 * -c, --mean_coverage_fraction: Fraction of the global mean coverage to use as a threshold for filtering low intervals. Intervals with coverage below fraction will be used for further analysis. (default: 0.5)
@@ -59,10 +59,10 @@ Also, if you already have reads alignment file, you could generage `coverage.bed
 ## Example
 
 ```bash
-slizer.py -m coverage -a assembly.fasta -b coverage.bed -l 100 -c 0.2 -zl -1.8 -zh 4.0 -r -o ./output -t 50
+slizer.py -m coverage -a assembly.fasta -b alignment.bam -l 100 -c 0.2 -zl -1.8 -zh 4.0 -r -o ./output -t 50
 ```
 
-This command will process the input `assembly.fasta` and `coverage.bed` created by user to create output files in the ./output folder using 50 threads. The minimum length threshold for coverage intervals is set to 100, and the mean coverage fraction is set to 0.2, low-coverage threahold is -1.8, high coverage threshold is 4.0. Low coverage reguos will be removed from final splitted assembly file.
+This command will process the input `assembly.fasta` and `alignment.bam` created by user to create output files in the ./output folder using 50 threads. The minimum length threshold for coverage intervals is set to 100, and the mean coverage fraction is set to 0.2, low-coverage threahold is -1.8, high coverage threshold is 4.0. Low coverage reguos will be removed from final splitted assembly file.
 
 ## Output Files
 

@@ -7,7 +7,7 @@ PACBIO = config["pacbio"]
 FR = config['forward_reads']
 RR = config['reverse_reads']
 EXECUTION_FOLDER = config['execution_folder']
-COVERAGE_BED = config['coverage_bed']
+BAM = config['bam']
 MIN_LENGTH = config['min_length_threshold']
 MEAN_COVERAGE_FRACTION = config["mean_coverage_fraction"]
 MODE = config["mode"]
@@ -29,20 +29,25 @@ rule envs:
 
 envs = rules.envs.input
 
-if MODE == "hifi":
-    include: "./rules/coverage_hifi.smk"
-    COVERAGE_BED = rules.get_coverage_hifi.output.coverage_bed
+if MODE == "bam":
+    BAM = BAM
 
-if MODE == "nanopore":
-    include: "./rules/coverage_nanopore.smk"
-    COVERAGE_BED = rules.get_coverage_nanopore.output.coverage_bed
+elif MODE == "hifi":
+    include: "./rules/align_hifi.smk"
+    BAM = rules.get_coverage_hifi.output.alignment_bam
 
-if MODE == "pacbio":
-    include: "./rules/coverage_pacbio.smk"
-    COVERAGE_BED = rules.get_coverage_pacbio.output.coverage_bed
+elif MODE == "nanopore":
+    include: "./rules/align_nanopore.smk"
+    BAM = rules.get_coverage_nanopore.output.alignment_bam
 
-if MODE == "paired":
-    include: "./rules/coverage_paired.smk"
-    COVERAGE_BED = rules.get_coverage_paired.output.coverage_bed
+elif MODE == "pacbio":
+    include: "./rules/align_pacbio.smk"
+    BAM = rules.get_coverage_pacbio.output.alignment_bam
+
+elif MODE == "paired":
+    include: "./rules/align_paired.smk"
+    BAM = rules.get_coverage_paired.output.alignment_bam
+
+include: "./rules/get_coverage.smk"
 
 include: "./rules/split_by_coverage.smk"

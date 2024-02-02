@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Process assembly fasta and coverage bed files.')
     parser.add_argument("-m", "--mode", help="mode to use", 
-                        choices=["hifi", "paired_reads", "nanopore", "pacbio", "coverage"], default="hifi")
+                        choices=["hifi", "paired_reads", "nanopore", "pacbio", "bam"], default="hifi")
     parser.add_argument('-a', '--assembly', type=str, help='Path to the assembly fasta file.', required=True)
     parser.add_argument("-1", "--forward_reads", type=str, help='Path to the forward reads fastq file.', default="")
     parser.add_argument("-2", "--reverse_reads", type=str, help='Path to the reverse reads fastq file.', default="")
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     parser.add_argument("-nanopore", type=str, help='Path to the nanopore reads fastq file.', default="")
     parser.add_argument("-pacbio", type=str, help='Path to the pacbio reads fastq file.', default="")
     parser.add_argument('-t','--threads', type=int, help='number of threads [default == 8]', default = 8)
-    parser.add_argument('-b', '--coverage_bed', type=str, help='Path to the coverage bed file.', default="")
+    parser.add_argument('-b', '--bam', type=str, help='Path to the alignment bam file', default="")
     parser.add_argument('-l', '--min_length_threshold', type=int, default=500, help='Minimum length threshold for coverage gaps.')
     parser.add_argument('-c', '--mean_coverage_fraction', type=float, default=0.5, 
                         help="Fraction of the global mean coverage to use as a threshold for filtering low intervals."
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     output_folder = os.path.abspath(args.output_folder)
     min_length_threshold = args.min_length_threshold
     mean_coverage_fraction = args.mean_coverage_fraction
-    coverage_bed = args.coverage_bed
+    bam = args.bam
     forward_reads = args.forward_reads
     reverse_reads = args.reverse_reads
     hifi = args.hifi
@@ -103,8 +103,8 @@ if __name__ == '__main__':
         nanopore = check_input(nanopore)
     if mode == "pacbio":
         pacbio = check_input(pacbio)
-    if mode == "coverage":
-        coverage_bed = check_input(coverage_bed)
+    if mode == "bam":
+        bam = check_input(bam)
         
     execution_folder = os.path.dirname(os.path.abspath(getsourcefile(lambda: 0)))
     execution_time = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
@@ -123,7 +123,7 @@ if __name__ == '__main__':
         "reverse_reads" : reverse_reads,
         "nanopore" : nanopore,
         "pacbio" : pacbio,
-        "coverage_bed" : coverage_bed,
+        "bam" : bam,
         "outdir" : output_folder,
         "min_length_threshold" : min_length_threshold,
         "mean_coverage_fraction": mean_coverage_fraction,
