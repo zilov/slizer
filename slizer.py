@@ -66,7 +66,7 @@ if __name__ == '__main__':
     parser.add_argument("--tail_threshold", type=int, default=1000, help="Size of the tail regions to exclude.")
     parser.add_argument("-zl", "--z_threshold_low", type=float, default=-2, help="Z-score threshold for low coverage. Should be negative float value.")
     parser.add_argument("-zh", "--z_threshold_high", type=float, default=2, help="Z-score threshold for high coverage.")
-    parser.add_argument("-r", "--remove_low_coverage", type=bool, default=False, action='store_true', help="Remove low coverage regions from splitted assembly/")
+    parser.add_argument("-r", "--remove_low_coverage", default=False, action='store_true', help="Remove low coverage regions from splitted assembly/")
     
     parser.add_argument('-d','--debug', help='debug mode', action='store_true')
         

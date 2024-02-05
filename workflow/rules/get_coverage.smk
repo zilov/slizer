@@ -2,7 +2,7 @@ rule get_coverage:
     input:
         bam = BAM
     threads: workflow.cores
-    conda: envs.align
+    conda: envs.bedtools
     output:
         coverage_bed = f"{OUTDIR}/alignment/{PREFIX}_coverage.bed",
     params:

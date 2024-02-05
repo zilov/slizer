@@ -25,7 +25,8 @@ rule all:
 
 rule envs:
     input:
-        align = "../envs/align.yaml"
+        align = "../envs/align.yaml",
+        bedtools = "../envs/bedtools.yaml"
 
 envs = rules.envs.input
 

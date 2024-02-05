@@ -2,8 +2,8 @@ rule split_by_coverage:
     input:
         assembly = ASSEMBLY,
         coverage_bed = rules.get_coverage.output.coverage_bed
+    conda: envs.bedtools
     threads: workflow.cores
-    conda: envs.align
     output:
         splitted_fasta = f"{OUTDIR}/{PREFIX}_contig_stats.tsv",
         split_stats = f"{OUTDIR}/{PREFIX}_final_statistics_report.txt",
