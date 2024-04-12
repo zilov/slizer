@@ -51,7 +51,7 @@ def read_bed_file(bed_file_path):
 # Function to calculate statistics for each contig
 def calculate_contig_stats(icov):
     logging.info("Counting contig stats...")
-    contig_stats_df = icov.groupby('contig_header').apply(contig_stats).reset_index()
+    contig_stats_df = icov.groupby('contig_header', as_index=False).apply(contig_stats).reset_index()
     return contig_stats_df
 
 
